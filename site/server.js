@@ -16,6 +16,7 @@ const publicDir = new URL("./public/", import.meta.url);
 const publicFiles = new Map([
   ["/index.html", "text/html; charset=utf-8"],
   ["/credits.html", "text/html; charset=utf-8"],
+  ["/robots.txt", "text/plain; charset=utf-8"],
   ["/css/style.css", "text/css; charset=utf-8"],
   ["/js/app.min.js", "text/javascript; charset=utf-8"],
   ["/js/app.js", "text/javascript; charset=utf-8"],
@@ -23,7 +24,14 @@ const publicFiles = new Map([
   ["/images/mark.svg", "image/svg+xml"],
   ["/images/partijas-emblema.svg", "image/svg+xml"],
   ["/images/phenjana.webp", "image/webp"],
+  ["/images/phenjana-400.webp", "image/webp"],
+  ["/images/phenjana-620.webp", "image/webp"],
+  ["/images/phenjana-700.webp", "image/webp"],
+  ["/images/phenjana-960.webp", "image/webp"],
   ["/images/cuche.webp", "image/webp"],
+  ["/images/cuche-400.webp", "image/webp"],
+  ["/images/cuche-700.webp", "image/webp"],
+  ["/images/cuche-960.webp", "image/webp"],
   ["/images/partijas-piemineklis.webp", "image/webp"],
   ["/images/triumfa-arka.webp", "image/webp"],
 ]);
@@ -34,7 +42,7 @@ function sendJson(response, status, data, headers = {}) {
   response.end(JSON.stringify(data));
 }
 
-async function serveFile(request, response, pathname) {
+async function serveFile(request, response, pathname, query) {
   let filePath = pathname;
   if (pathname === "/") {
     filePath = "/index.html";
@@ -46,7 +54,32 @@ async function serveFile(request, response, pathname) {
     return;
   }
 
-  const contents = await readFile(new URL(filePath.slice(1), publicDir));
+  const responsiveImage = filePath.match(/^\/images\/(phenjana|cuche)(?:-(400|620|700|960))?\.webp$/);
+  const width = responsiveImage?.[2] ?? query?.match(/^w=(400|620|700|960)$/)?.[1];
+  const variantPath = responsiveImage && width && `/images/${responsiveImage[1]}-${width}.webp`;
+  let contents;
+  let cacheControl = "public, max-age=2592000";
+  if (variantPath && publicFiles.has(variantPath)) {
+    try {
+      contents = await readFile(new URL(variantPath.slice(1), publicDir));
+    } catch (error) {
+      if (error.code !== "ENOENT") throw error;
+      // Ja samazinātā attēla nav, nosūta oriģinālu un to šim URL nekešo.
+      contents = await readFile(new URL(`images/${responsiveImage[1]}.webp`, publicDir));
+      cacheControl = "no-store";
+    }
+  } else {
+    contents = await readFile(new URL(filePath.slice(1), publicDir));
+  }
+  if (filePath === "/index.html") {
+    // Iekļauj stilus sākumlapā, lai pārlūkam nebūtu jāgaida atsevišķs CSS pieprasījums.
+    const css = await readFile(new URL("css/style.css", publicDir), "utf8");
+    const inlineCss = css.replaceAll('url("../images/', 'url("./images/');
+    contents = Buffer.from(contents.toString("utf8").replace(
+      '<link rel="stylesheet" href="./css/style.css">',
+      () => `<style>\n${inlineCss}</style>`,
+    ));
+  }
   const headers = { "Content-Type": contentType };
 
   // Lighthouse iesaka saspiest teksta failus. Vary nošķir saspiesto un parasto atbildi kešatmiņā.
@@ -75,8 +108,12 @@ async function serveFile(request, response, pathname) {
     body = await compress(contents);
     headers["Content-Encoding"] = "gzip";
   }
-  // Attēlus pārlūks var izmantot atkārtoti vienu dienu.
-  if (contentType.startsWith("image/")) headers["Cache-Control"] = "public, max-age=86400";
+  // Statiskos resursus pārlūks var izmantot atkārtoti 30 dienas.
+  if (filePath === "/robots.txt" || contentType.startsWith("text/html")) {
+    headers["Cache-Control"] = "no-cache";
+  } else {
+    headers["Cache-Control"] = cacheControl;
+  }
 
   headers["Content-Length"] = body.length;
   response.writeHead(200, headers);
@@ -133,7 +170,7 @@ async function handleFeedback(request, response) {
 // Maršrutēšana un palaišana
 async function routeRequest(request, response) {
   try {
-    const pathname = request.url.split("?")[0];
+    const [pathname, query] = request.url.split("?", 2);
 
     if (pathname === "/api/feedback") {
       if (request.method === "POST") {
@@ -145,7 +182,7 @@ async function routeRequest(request, response) {
     }
 
     if (request.method === "GET" || request.method === "HEAD") {
-      await serveFile(request, response, pathname);
+      await serveFile(request, response, pathname, query);
       return;
     }
 

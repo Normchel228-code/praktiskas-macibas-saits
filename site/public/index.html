@@ -3,11 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preload" as="image" fetchpriority="high"
+        imagesrcset="./images/phenjana-400.webp 400w, ./images/phenjana-620.webp 620w, ./images/phenjana-700.webp 700w, ./images/phenjana-960.webp 960w, ./images/phenjana.webp 1280w"
+        imagesizes="(max-width: 704px) calc(100vw - 32px), (max-width: 1184px) calc(55vw - 44px), 608px">
   <!-- Google Search var izmantot šo aprakstu meklēšanas rezultāta fragmentā. -->
   <meta name="description" content="Iepazīsti Phenjanu, Ziemeļkorejas galvaspilsētu, trīs tās pieminekļus un izmēģini ceļojuma budžeta kalkulatoru.">
   <meta name="keywords" content="Phenjana, Ziemeļkoreja, KTDR, Čučhe tornis, Triumfa arka, ceļojuma izmaksas">
   <link rel="icon" href="./images/mark.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./css/style.css" async>
+  <link rel="stylesheet" href="./css/style.css">
   <title>Ceļojums uz Phenjanu</title>
 </head>
 <body onkeydown="
@@ -38,7 +41,10 @@
         <a class="button" href="#apskate">Apskatīt maršrutu</a>
       </div>
       <div class="hero__image">
-        <img src="./images/phenjana.webp" width="1280" height="1024" alt="Phenjanas panorāma ar dzīvojamiem kvartāliem un augstceltnēm">
+        <img src="./images/phenjana.webp"
+             srcset="./images/phenjana-400.webp 400w, ./images/phenjana-620.webp 620w, ./images/phenjana-700.webp 700w, ./images/phenjana-960.webp 960w, ./images/phenjana.webp 1280w"
+             sizes="(max-width: 704px) calc(100vw - 32px), (max-width: 1184px) calc(55vw - 44px), 608px"
+             width="1280" height="1024" alt="Phenjanas panorāma ar dzīvojamiem kvartāliem un augstceltnēm" fetchpriority="high">
         <p>Phenjana · Skats no Čučhe torņa</p>
       </div>
     </section>
@@ -57,6 +63,8 @@
              ">
           <div class="gallery__slide">
             <img src="./images/cuche.webp"
+                 srcset="./images/cuche-400.webp 400w, ./images/cuche-700.webp 700w, ./images/cuche-960.webp 960w, ./images/cuche.webp 1280w"
+                 sizes="(max-width: 704px) calc(100vw - 34px), (max-width: 1184px) calc(60vw - 20.4px), 690px"
                  width="1280" height="720" alt="Naktī izgaismots Čučhe tornis Tedonas upes krastā" loading="lazy" decoding="async">
             <div class="gallery__description">
               <h3>Čučhe tornis</h3>
@@ -133,6 +141,6 @@
     </div>
   </footer>
   <!-- Skripts sāk ielādi asinhroni pēc lapas satura. -->
-  <script src="./js/app.min.js" defer></script>
+  <script src="./js/app.min.js" async></script>
 </body>
 </html>

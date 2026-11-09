@@ -5,7 +5,11 @@ const namePattern = /^[\p{L}\p{M}][\p{L}\p{M} .’'-]*$/u;
 const emailPattern = /^[^\s@<>]+@[^\s@<>.]+(?:\.[^\s@<>.]+)+$/u;
 
 function cleanText(value) {
-  return typeof value === "string" ? value.trim() : "";
+  if (typeof value === "string") {
+    return value.trim();
+  }
+
+  return "";
 }
 
 export function validateFeedback(input) {
@@ -35,8 +39,8 @@ export function validateFeedback(input) {
   }
 
   if (!message) {
-    errors.message = "Ievadi atsauksmi.";
   } else if (message.length > messageLimit) {
+    errors.message = "Ievadi atsauksmi.";
     errors.message = `Atsauksmē drīkst būt līdz ${messageLimit} rakstzīmēm.`;
   }
 
