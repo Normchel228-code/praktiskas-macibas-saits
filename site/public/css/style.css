@@ -1,0 +1,278 @@
+/* Saskaņā ar dizaina ieteikumiemдавай поправим.  tīru #fff un #000 vietā izmantotas maigākas krāsu variācijas, saglabājot pietiekamu teksta kontrastu. */
+html {
+  font: 16px/1.5 Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none; }
+
+body {
+  margin: 0;
+  background: #f7efde;
+  color: #182638;
+}
+
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { line-height: 1.1; }
+h1 {
+  color: #7b192a;
+  font: 700 64px/1.05 Georgia, serif;
+  letter-spacing: -.025em;
+}
+
+h2 { font-family: Georgia, serif; }
+h2 { font-size: 42px; }
+h3 { font-size: 22px; }
+
+a { color: #7b192a; }
+img { display: block; width: 100%; height: auto; }
+button, input, textarea { font: inherit; }
+
+:focus-visible {
+  outline: 3px solid #a01d32;
+  outline-offset: 3px;
+}
+
+.wrap {
+  width: calc(100% - 32px);
+  max-width: 1152px;
+  margin: 0 auto;
+}
+
+.eyebrow {
+  margin-bottom: 10px;
+  color: #7b192a;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.button {
+  display: inline-block;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 10px 16px;
+  background: #a01d32;
+  color: #f7efde;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button:hover { background: #7b192a; }
+.button:disabled { opacity: .65; cursor: wait; }
+
+.button--outline {
+  border-color: #a01d32;
+  background: transparent;
+  color: #7b192a;
+}
+
+.button--outline:hover { background: #eee0c8; }
+
+/* Galvene un sākums */
+.site-header {
+  border-top: 5px solid #a01d32;
+  border-bottom: 2px solid #c5b492;
+  background: #182638;
+}
+
+.site-header :focus-visible,
+.section--shaded :focus-visible {
+  outline-color: #f4ca69;
+}
+
+.site-header__inner, .site-footer__inner, .nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.site-header__inner, .site-footer__inner {
+  justify-content: space-between;
+  gap: 12px 24px;
+  padding: 18px 0;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #fff8e9;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.brand::before {
+  width: 34px;
+  height: 17px;
+  outline: 1px solid #c5b492;
+  background: url("../images/mark.svg") center / contain no-repeat;
+  content: "";
+}
+
+.nav-list {
+  gap: 5px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-list a {
+  color: #fff8e9;
+  text-decoration: none;
+}
+
+.nav-list a:hover { text-decoration: underline; }
+
+.hero {
+  display: grid;
+  grid-template-columns: .9fr 1.1fr;
+  align-items: center;
+  gap: 48px;
+  padding: 64px 0;
+}
+
+.intro {
+  max-width: 512px;
+  margin: 16px 0 24px;
+  color: #475363;
+  font-size: 18px;
+}
+
+.hero__image img {
+  aspect-ratio: 5 / 4;
+  border: 1px solid #786952;
+  box-shadow: 7px 7px #a01d32;
+  object-fit: cover;
+}
+
+.hero__image p {
+  margin-top: 13px;
+  color: #475363;
+  font-size: 14px;
+}
+
+/* Apskates objekti */
+.section { padding: 64px 0; }
+.section--shaded {
+  background: #182638;
+  color: #fff8e9;
+}
+
+.section--shaded > .wrap { position: relative; }
+
+.section--shaded > .wrap::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 44px;
+  height: 44px;
+  background: url("../images/partijas-emblema.svg") center / contain no-repeat;
+  content: "";
+}
+
+.section--shaded .eyebrow { color: #f4ca69; }
+.section--shaded h2 { padding-right: 54px; }
+
+.section--shaded .button--outline {
+  border-color: #f4ca69;
+  color: #fff8e9;
+}
+
+.section--shaded .button--outline:hover { background: #31435a; }
+
+.gallery, .plan { margin-top: 24px; }
+
+.gallery__slide {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid #c5b492;
+  border-radius: 10px;
+  background: #fff8e9;
+  color: #182638;
+}
+
+.gallery__slide[hidden] { display: none; }
+
+.gallery__slide img {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.gallery__description { padding: 32px; }
+.gallery__slide p, .panel > p { margin-top: 10px; }
+
+.gallery__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 11px;
+  margin-top: 14px;
+}
+
+/* Kalkulators un atsauksmju forma */
+.plan {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 16px;
+}
+
+.panel {
+  border: 1px solid #c5b492;
+  border-radius: 10px;
+  padding: 24px;
+  background: #fff8e9;
+}
+
+label {
+  display: block;
+  margin: 16px 0 5px;
+  font-weight: 600;
+}
+
+input, textarea {
+  display: block;
+  width: 100%;
+  border: 1px solid #786952;
+  border-radius: 5px;
+  padding: 10px 11px;
+  background: #fff8e9;
+  color: #182638;
+}
+
+textarea { resize: vertical; }
+.panel button { margin-top: 16px; }
+
+.budget {
+  display: block;
+  margin-top: 19px;
+  border-top: 1px solid #c5b492;
+  padding-top: 16px;
+  font-weight: 700;
+}
+
+.panel .field-error {
+  margin-top: 5px;
+  color: #7b192a;
+}
+
+[aria-invalid="true"] { border-color: #a01d32; }
+.form-status:empty { margin: 0; }
+.site-footer {
+  border-top: 2px solid #c5b492;
+  background: #eee0c8;
+}
+.credits h2 { margin-top: 24px; }
+.credits ul { padding-inline-start: 20px; }
+
+@media (max-width: 704px) {
+  h1 { font-size: 48px; }
+  h2 { font-size: 32px; }
+  .hero, .gallery__slide, .plan { grid-template-columns: 1fr; }
+}

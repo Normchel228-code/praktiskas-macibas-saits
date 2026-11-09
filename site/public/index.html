@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="lv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Search var izmantot šo aprakstu meklēšanas rezultāta fragmentā. -->
+  <meta name="description" content="Iepazīsti Phenjanu, Ziemeļkorejas galvaspilsētu, trīs tās pieminekļus un izmēģini ceļojuma budžeta kalkulatoru.">
+  <meta name="keywords" content="Phenjana, Ziemeļkoreja, KTDR, Čučhe tornis, Triumfa arka, ceļojuma izmaksas">
+  <link rel="icon" href="./images/mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./css/style.css" async>
+  <title>Ceļojums uz Phenjanu</title>
+</head>
+<body onkeydown="
+  const link = event.target.closest('a[href]');
+  if (!link || event.key !== ' ' || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+  event.preventDefault();
+  if (!event.repeat) link.click();
+">
+  <header class="site-header" id="sakums">
+    <div class="wrap site-header__inner">
+      <a class="brand" href="#sakums">Phenjana</a>
+      <nav aria-label="Galvenā navigācija">
+        <ul class="nav-list">
+          <li><a href="#sakums">Sākums</a></li>
+          <li><a href="#apskate">Apskates objekti</a></li>
+          <li><a href="#plans">Ceļojuma plāns</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="wrap hero" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Ziemeļkoreja · <span lang="ko">평양</span></p>
+        <h1 id="page-title">Ceļojums<br>uz Phenjanu</h1>
+        <p class="intro">Phenjana ir Ziemeļkorejas galvaspilsēta. Šis maršruts ved gar Tedonas upi un iepazīstina ar trim pilsētas pieminekļiem, kuros redzama valsts politiskā simbolika.</p>
+        <a class="button" href="#apskate">Apskatīt maršrutu</a>
+      </div>
+      <div class="hero__image">
+        <img src="./images/phenjana.webp" width="1280" height="1024" alt="Phenjanas panorāma ar dzīvojamiem kvartāliem un augstceltnēm">
+        <p>Phenjana · Skats no Čučhe torņa</p>
+      </div>
+    </section>
+
+    <section class="section section--shaded" id="apskate" aria-labelledby="gallery-title">
+      <div class="wrap">
+        <p class="eyebrow">01 / Maršruts</p>
+        <h2 id="gallery-title">Apskates objekti</h2>
+        <!-- Galerijas attēlus ielādē pēc vajadzības. width un height norāda sākotnējo malu attiecību. -->
+        <div class="gallery" tabindex="0" role="group" aria-label="Galerija. Izmanto bulttaustiņus, Enter vai atstarpes taustiņu, lai mainītu attēlu."
+             onkeydown="
+               if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight' && event.key !== ' ' && event.key !== 'Enter') return;
+               if ((event.key === ' ' || event.key === 'Enter') && event.target !== this) return;
+               event.preventDefault();
+               if (!event.repeat) this.querySelector(event.key === 'ArrowLeft' ? '#previous-slide' : '#next-slide').click();
+             ">
+          <div class="gallery__slide">
+            <img src="./images/cuche.webp"
+                 width="1280" height="720" alt="Naktī izgaismots Čučhe tornis Tedonas upes krastā" loading="lazy" decoding="async">
+            <div class="gallery__description">
+              <h3>Čučhe tornis</h3>
+              <p>1982. gadā celtais 170 metru tornis veltīts čučhe ideoloģijai. To vainago lāpas skulptūra, kas naktī ir izgaismota.</p>
+            </div>
+          </div>
+          <div class="gallery__slide" hidden>
+            <img src="./images/partijas-piemineklis.webp" width="1280" height="720" alt="Trīs akmens dūres, kas tur āmuru, otu un sirpi" loading="lazy" decoding="async">
+            <div class="gallery__description">
+              <h3>Partijas dibināšanas piemineklis</h3>
+              <p>Piemineklis atklāts 1995. gadā. Āmurs, sirpis un rakstāmota ir Korejas Darba partijas emblēmas elementi, kas simbolizē strādniekus, zemniekus un inteliģenci.</p>
+            </div>
+          </div>
+          <div class="gallery__slide" hidden>
+            <img src="./images/triumfa-arka.webp" width="1280" height="720" alt="Phenjanas Triumfa arka ar vairākpakāpju jumtu" loading="lazy" decoding="async">
+            <div class="gallery__description">
+              <h3>Triumfa arka</h3>
+              <p>1982. gadā atklātā arka piemin pretošanos Japānas koloniālajai varai. Uz tās redzami gadskaitļi 1925 un 1945.</p>
+            </div>
+          </div>
+          <div class="gallery__controls">
+            <button class="button button--outline" type="button" id="previous-slide">Iepriekšējais</button>
+            <p id="gallery-status" aria-live="polite"></p>
+            <button class="button button--outline" type="button" id="next-slide">Nākamais</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap section" id="plans" aria-labelledby="plan-title">
+      <p class="eyebrow">02 / Plānošana</p>
+      <h2 id="plan-title">Ceļojuma plāns</h2>
+      <div class="plan">
+        <form class="panel" id="budget-form">
+          <h3>Izmaksu kalkulators</h3>
+          <p>Ievadi dienu skaitu un izdevumus dienā. Sākuma vērtības ir mācību piemērs.</p>
+
+          <label for="days">Dienu skaits</label>
+          <input id="days" type="number" min="1" max="365" step="1" value="7" required>
+
+          <label for="daily-cost">Izmaksas dienā (EUR)</label>
+          <input id="daily-cost" type="number" min="0" max="10000" step="0.01" value="85" required>
+
+          <output class="budget" id="budget-total" for="days daily-cost">Aprēķins tiek ielādēts.</output>
+        </form>
+
+        <form class="panel" id="feedback-form" method="post" action="/api/feedback">
+          <h3>Atsauksme par ceļvedi</h3>
+          <p>Mācību forma. Ievadi testa datus.</p>
+
+          <label for="name">Vārds</label>
+          <input id="name" name="name" type="text" autocomplete="name" placeholder="Koks Kociņš" aria-describedby="name-error" required>
+          <p class="field-error" id="name-error" hidden></p>
+
+          <label for="email">E-pasts</label>
+          <input id="email" name="email" type="email" autocomplete="email" placeholder="koks@example.com" aria-describedby="email-error" required>
+          <p class="field-error" id="email-error" hidden></p>
+
+          <label for="message">Atsauksme</label>
+          <textarea id="message" name="message" rows="4" placeholder="Mani ieinteresēja Čučhe tornis!" aria-describedby="message-error" required></textarea>
+          <p class="field-error" id="message-error" hidden></p>
+
+          <button class="button" type="submit">Nosūtīt atsauksmi</button>
+          <p class="form-status" id="feedback-status" role="status"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap site-footer__inner">
+      <p>Phenjana · PB1 mācību projekts</p>
+      <a href="./credits.html">Attēlu un informācijas avoti</a>
+    </div>
+  </footer>
+  <!-- Skripts sāk ielādi asinhroni pēc lapas satura. -->
+  <script src="./js/app.min.js" defer></script>
+</body>
+</html>

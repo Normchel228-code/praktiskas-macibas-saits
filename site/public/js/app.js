@@ -1,0 +1,108 @@
+import { validateFeedback } from "./validation.js";
+
+// Galerija
+const slides = Array.from(document.querySelectorAll(".gallery__slide"));
+const galleryStatus = document.querySelector("#gallery-status");
+let currentSlide = 0;
+
+function showSlide(index) {
+  slides[currentSlide].hidden = true;
+  currentSlide = (index + slides.length) % slides.length;
+  const slide = slides[currentSlide];
+  slide.hidden = false;
+  const title = slide.querySelector("h3").textContent;
+  galleryStatus.textContent = `${currentSlide + 1} / ${slides.length} · ${title}`;
+}
+
+document.querySelector("#previous-slide").addEventListener("click", () => showSlide(currentSlide - 1));
+document.querySelector("#next-slide").addEventListener("click", () => showSlide(currentSlide + 1));
+showSlide(0);
+
+// Izmaksu kalkulators
+const budgetForm = document.querySelector("#budget-form");
+const days = document.querySelector("#days");
+const dailyCost = document.querySelector("#daily-cost");
+const budgetTotal = document.querySelector("#budget-total");
+const euroFormat = new Intl.NumberFormat("lv-LV", { style: "currency", currency: "EUR" });
+
+function updateBudget() {
+  if (!days.validity.valid) {
+    budgetTotal.value = `Ievadi veselu dienu skaitu no ${days.min} līdz ${days.max}.`;
+    return;
+  }
+
+  if (!dailyCost.validity.valid) {
+    budgetTotal.value = `Ievadi summu no ${dailyCost.min} līdz ${dailyCost.max} EUR ar ne vairāk kā divām zīmēm aiz komata.`;
+    return;
+  }
+
+  const dailyCents = Math.round(dailyCost.valueAsNumber * 100);
+  const total = (days.valueAsNumber * dailyCents) / 100;
+  budgetTotal.value = `Kopā: ${euroFormat.format(total)}`;
+}
+
+budgetForm.addEventListener("input", updateBudget);
+budgetForm.addEventListener("submit", (event) => event.preventDefault());
+updateBudget();
+
+// Atsauksmju forma
+const feedbackForm = document.querySelector("#feedback-form");
+const feedbackStatus = document.querySelector("#feedback-status");
+const submitButton = feedbackForm.querySelector("button");
+const feedbackFields = feedbackForm.querySelectorAll("[name]");
+
+function showFeedbackErrors(errors) {
+  let firstInvalidField;
+
+  for (const field of feedbackFields) {
+    const error = errors[field.name];
+    const hint = document.getElementById(field.getAttribute("aria-describedby"));
+    hint.textContent = error ?? "";
+    hint.hidden = !error;
+
+    if (error) {
+      field.setAttribute("aria-invalid", "true");
+      firstInvalidField ??= field;
+    } else {
+      field.removeAttribute("aria-invalid");
+    }
+  }
+
+  firstInvalidField?.focus();
+  return Boolean(firstInvalidField);
+}
+
+async function submitFeedback(event) {
+  event.preventDefault();
+  if (submitButton.disabled) return;
+
+  feedbackStatus.textContent = "";
+  const feedback = Object.fromEntries(new FormData(feedbackForm));
+  if (showFeedbackErrors(validateFeedback(feedback))) return;
+
+  submitButton.disabled = true;
+  feedbackStatus.textContent = "Nosūta atsauksmi…";
+
+  try {
+    const response = await fetch(feedbackForm.action, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(feedback),
+    });
+    const result = await response.json();
+
+    if (response.ok) {
+      feedbackForm.reset();
+    } else if (result.errors) {
+      showFeedbackErrors(result.errors);
+    }
+    feedbackStatus.textContent = result.message;
+  } catch {
+    feedbackStatus.textContent = "Neizdevās sazināties ar serveri. Mēģini vēlreiz.";
+  } finally {
+    submitButton.disabled = false;
+  }
+}
+
+feedbackForm.noValidate = true;
+feedbackForm.addEventListener("submit", submitFeedback);

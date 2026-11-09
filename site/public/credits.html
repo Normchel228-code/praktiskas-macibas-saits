@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="lv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Search var izmantot šo aprakstu meklēšanas rezultāta fragmentā. -->
+  <meta name="description" content="Ceļveža par Phenjanu informācijas avoti, fotogrāfiju licences un simbolikas izcelsme.">
+  <link rel="icon" href="./images/mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./css/style.css">
+  <title>Avoti · Ceļojums uz Phenjanu</title>
+</head>
+<body onkeydown="
+  const link = event.target.closest('a[href]');
+  if (!link || event.key !== ' ' || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+  event.preventDefault();
+  if (!event.repeat) link.click();
+">
+  <main class="wrap section credits">
+    <p class="eyebrow"><a href="./index.html">Atpakaļ uz sākumu</a></p>
+    <h1>Avoti</h1>
+
+    <h2>Informācija</h2>
+    <ul>
+      <li><a href="https://www.mfa.gov.lv/lv/ziemelkoreja-celojumu-bridinajumi">Par Ziemeļkoreju</a> · Latvijas Ārlietu ministrija</li>
+      <li><a href="https://mcid.mcah.columbia.edu/work/w0001985">Čučhe tornis</a> · Kolumbijas Universitātes arhitektūras katalogs</li>
+      <li><a href="https://koryogroup.com/travel-guide/north-korea-guide-monument-to-party-founding">Partijas dibināšanas piemineklis</a> · Koryo Tours</li>
+      <li><a href="https://koryogroup.com/travel-guide/north-korea-guide-arch-of-triumph">Triumfa arka</a> · Koryo Tours</li>
+    </ul>
+
+    <h2>Fotogrāfijas un simbolika</h2>
+    <p>Attēli no Wikimedia Commons. Fotogrāfiju izmēri samazināti, tās kadrētas un pārveidotas uz WebP.</p>
+    <ul>
+      <li><a href="https://commons.wikimedia.org/wiki/File:Pyongyang_panorama_from_Juche_tower.jpg">Phenjanas panorāma</a> · David Clayton Ellsworth · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></li>
+      <li><a href="https://commons.wikimedia.org/wiki/File:Juche_Tower_from_Kim_Il_Sung_Square_(32982954902).jpg">Čučhe tornis</a> · jennybento · <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a></li>
+      <li><a href="https://commons.wikimedia.org/wiki/File:Party-Foundation-Monument.jpg">Partijas dibināšanas piemineklis</a> · Bjørn Christian Tørrissen · <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a></li>
+      <li><a href="https://commons.wikimedia.org/wiki/File:Arch_of_Triumph_in_Pyongyang.jpg">Triumfa arka</a> · Gilad Rom · <a href="https://creativecommons.org/licenses/by/2.5/">CC BY 2.5</a></li>
+      <li><a href="https://commons.wikimedia.org/wiki/File:Flag_of_North_Korea.svg">KTDR karogs</a> · publiskais domēns</li>
+      <li><a href="https://commons.wikimedia.org/wiki/File:Symbol_of_the_Workers%27_Party_of_Korea.svg">Korejas Darba partijas emblēma</a> · publiskais domēns</li>
+    </ul>
+  </main>
+</body>
+</html>
