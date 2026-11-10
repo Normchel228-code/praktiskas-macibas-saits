@@ -3,6 +3,7 @@ const emailLimit = 254;
 const messageLimit = 500;
 const namePattern = /^[\p{L}\p{M}][\p{L}\p{M} .’'-]*$/u;
 const emailPattern = /^[^\s@<>]+@[^\s@<>.]+(?:\.[^\s@<>.]+)+$/u;
+const domainLabelPattern = /^[\p{L}\p{N}](?:[\p{L}\p{N}\p{M}-]{0,61}[\p{L}\p{N}\p{M}])?$/u;
 
 function cleanText(value) {
   if (typeof value === "string") {
@@ -34,13 +35,17 @@ export function validateFeedback(input) {
 
   if (!email) {
     errors.email = "Ievadi e-pasta adresi.";
-  } else if (email.length > emailLimit || !emailPattern.test(email)) {
+  } else if (
+    email.length > emailLimit ||
+    !emailPattern.test(email) ||
+    !email.split("@")[1].split(".").every((label) => domainLabelPattern.test(label))
+  ) {
     errors.email = "Ievadi derīgu e-pasta adresi.";
   }
 
   if (!message) {
-  } else if (message.length > messageLimit) {
     errors.message = "Ievadi atsauksmi.";
+  } else if (message.length > messageLimit) {
     errors.message = `Atsauksmē drīkst būt līdz ${messageLimit} rakstzīmēm.`;
   }
 
