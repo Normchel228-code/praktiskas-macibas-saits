@@ -40,22 +40,25 @@ PORT=3001 node server.js
 
 ```text
 phenjana/
-├── README.md                  projekta apraksts un palaišana
-├── package.json               projekta iestatījumi
-├── package-lock.json          būvēšanas pakotņu versijas
-├── server.js                  serveris un pieprasījumu apstrāde
+├── README.md                    projekta apraksts un palaišana
+├── package.json                 projekta iestatījumi
+├── package-lock.json            būvēšanas pakotņu versijas
+├── server.js                    serveris un pieprasījumu apstrāde
+├── screenshots/                 vietnes ekrānuzņēmumi (3)
 └── public/
-    ├── index.html             galvenā lapa
+    ├── index.html               galvenā lapa
     ├── credits.html             informācijas un attēlu avoti
     ├── css/
-    │   └── style.css          lapu stili
+    │   └── style.css            lapu stili
     ├── js/
-    │   ├── app.js             galerija, kalkulators un forma
-    │   ├── app.min.js        pārlūka JavaScript būvējums
-    │   └── validation.js      kopīga formas datu pārbaude
+    │   ├── app.js               galerija, kalkulators un forma
+    │   ├── app.min.js           pārlūka JavaScript būvējums
+    │   └── validation.js        kopīga formas datu pārbaude
     └── images/
         ├── phenjana.webp
+        ├── phenjana-{400,620,700,960}.webp
         ├── cuche.webp
+        ├── cuche-{400,700,960}.webp
         ├── partijas-piemineklis.webp
         ├── triumfa-arka.webp
         ├── partijas-emblema.svg
