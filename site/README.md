@@ -17,24 +17,28 @@ Projektam nav jāinstalē papildu pakotnes.
 
 ## Palaišana
 
-Atarhivē projektu un atver termināli mapē, kurā atrodas mape `phenjana`.
+Atarhivē projektu un atver termināli mapē, kurā atrodas mape `site`.
 
 ```bash
-cd phenjana
+cd site
 node server.js
 ```
 
-Atver pārlūkā [http://127.0.0.1:3000](http://127.0.0.1:3000).
+Vietne būs pieejama pārlūkprogrammā: `http://localhost:3000`.
 
-Kamēr izmanto vietni, atstāj termināli atvērtu. Lai apturētu serveri, terminālī nospied **Ctrl+C**.
+### Publiska piekļuve ar Cloudflare Tunnel
 
-Ja ports 3000 jau ir aizņemts, norādi citu:
+Ja nepieciešams nodrošināt piekļuvi vietnei no interneta, var izmantot `cloudflared`. Tam jābūt iepriekš instalētam.
+
+Atver otru termināli un izpildi komandu:
 
 ```bash
-PORT=3001 node server.js
+cloudflared tunnel --url http://127.0.0.1:3000
 ```
 
-Šajā gadījumā atver [http://127.0.0.1:3001](http://127.0.0.1:3001).
+Terminālī tiks parādīta publiska `trycloudflare.com` saite, ar kuru vietnei var piekļūt arī no citām ierīcēm.
+
+**Piezīme:** Node.js serverim un Cloudflare Tunnel jāpaliek ieslēgtiem. Šis ir pagaidu tunelis, kas paredzēts galvenokārt testēšanai un demonstrēšanai.
 
 ## Projekta struktūra
 
@@ -70,8 +74,8 @@ Serveris pieņem un pārbauda testa atsauksmes. Pastāvīga atsauksmju saglabā�
 
 ## Veiktspēja un meklēšana
 
-- Attēli izmanto WebP formātu.
-- Galerijas attēli izmanto atlikto ielādi un asinhronu dekodēšanu. Attēlu izmēri ir norādīti HTML.
+- Attēli izmanto WebP un SVG formātus.
+- Galerijas attēli izmanto atlikto ielādi un asinhronu dekodēšanu, lai paātrinātu saita ielādēšanu. Attēlu izmēri ir norādīti HTML, lai ātrāk lādētos, būtu labāk Cumulative Layout Shift (CLS)
 - JavaScript būvējums tiek ielādēts asinhroni lapas beigās. Google Closure Compiler apvieno un minificē pārlūka JavaScript. Serveris saspiež teksta failus ar gzip un norāda pārlūkam, cik ilgi attēlus glabāt kešatmiņā.
 - Katrai lapai ir savs virsraksts un metaapraksts. Attēlu alternatīvais teksts apraksta attēlu saturu.
 
