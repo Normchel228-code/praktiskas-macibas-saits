@@ -43,6 +43,7 @@ phenjana/
 ├── README.md                    projekta apraksts un palaišana
 ├── package.json                 projekta iestatījumi
 ├── package-lock.json            būvēšanas pakotņu versijas
+├── Phenjana_atskaite.docx       projekta atskaite
 ├── server.js                    serveris un pieprasījumu apstrāde
 ├── screenshots/                 vietnes ekrānuzņēmumi (3)
 └── public/
