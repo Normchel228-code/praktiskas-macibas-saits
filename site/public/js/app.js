@@ -1,6 +1,7 @@
 import { validateFeedback } from "./validation.js";
 
 // Galerija
+const gallery = document.querySelector(".gallery");
 const slides = Array.from(document.querySelectorAll(".gallery__slide"));
 const galleryStatus = document.querySelector("#gallery-status");
 let currentSlide = 0;
@@ -16,6 +17,14 @@ function showSlide(index) {
 
 document.querySelector("#previous-slide").addEventListener("click", () => showSlide(currentSlide - 1));
 document.querySelector("#next-slide").addEventListener("click", () => showSlide(currentSlide + 1));
+gallery.addEventListener("keydown", (event) => {
+  const { key } = event;
+  if (key !== "ArrowLeft" && key !== "ArrowRight" && key !== " " && key !== "Enter") return;
+  if ((key === " " || key === "Enter") && event.target !== gallery) return;
+
+  event.preventDefault();
+  if (!event.repeat) showSlide(currentSlide + (key === "ArrowLeft" ? -1 : 1));
+});
 showSlide(0);
 
 // Izmaksu kalkulators
@@ -69,7 +78,6 @@ function showFeedbackErrors(errors) {
   }
 
   firstInvalidField?.focus();
-  return Boolean(firstInvalidField);
 }
 
 async function submitFeedback(event) {
@@ -78,7 +86,7 @@ async function submitFeedback(event) {
 
   feedbackStatus.textContent = "";
   const feedback = Object.fromEntries(new FormData(feedbackForm));
-  if (showFeedbackErrors(validateFeedback(feedback))) return;
+  showFeedbackErrors(validateFeedback(feedback));
 
   submitButton.disabled = true;
   feedbackStatus.textContent = "Nosūta atsauksmi…";
@@ -89,6 +97,13 @@ async function submitFeedback(event) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(feedback),
     });
+    const status = `HTTP ${response.status} ${response.statusText}`.trimEnd();
+    if (response.ok) {
+      console.info(status);
+    } else {
+      console.warn(status);
+    }
+
     const result = await response.json();
 
     if (response.ok) {

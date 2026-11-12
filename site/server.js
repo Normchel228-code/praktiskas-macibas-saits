@@ -1,5 +1,5 @@
 import { readFile } from "node:fs/promises";
-import { createServer } from "node:http";
+import { createServer, STATUS_CODES } from "node:http";
 import { promisify } from "node:util";
 import { gzip } from "node:zlib";
 import { validateFeedback } from "./public/js/validation.js";
@@ -19,6 +19,7 @@ const publicFiles = new Map([
   ["/robots.txt", "text/plain; charset=utf-8"],
   ["/css/style.css", "text/css; charset=utf-8"],
   ["/js/app.min.js", "text/javascript; charset=utf-8"],
+  ["/js/keyboard.js", "text/javascript; charset=utf-8"],
   ["/js/app.js", "text/javascript; charset=utf-8"],
   ["/js/validation.js", "text/javascript; charset=utf-8"],
   ["/images/mark.svg", "image/svg+xml"],
@@ -157,11 +158,9 @@ async function handleFeedback(request, response) {
     sendJson(response, 400, { message: "Nederīgs JSON." });
     return;
   }
-
   const errors = validateFeedback(input);
   if (Object.keys(errors).length > 0) {
-    sendJson(response, 400, { message: "Pārbaudi ievadītos datus.", errors });
-    return;
+    return sendJson(response, 400, { message: "400 Bad Request", errors });
   }
 
   sendJson(response, 200, { message: "Paldies! Atsauksme saņemta." });
@@ -173,6 +172,10 @@ async function routeRequest(request, response) {
     const [pathname, query] = request.url.split("?", 2);
 
     if (pathname === "/api/feedback") {
+      response.once("finish", () => {
+        const status = response.statusCode;
+        console.log(`${request.method} ${pathname} → HTTP ${status} ${STATUS_CODES[status]}`);
+      });
       if (request.method === "POST") {
         await handleFeedback(request, response);
         return;

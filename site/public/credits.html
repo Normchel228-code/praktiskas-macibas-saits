@@ -9,12 +9,7 @@
   <link rel="stylesheet" href="./css/style.css">
   <title>Avoti · Ceļojums uz Phenjanu</title>
 </head>
-<body onkeydown="
-  const link = event.target.closest('a[href]');
-  if (!link || event.key !== ' ' || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
-  event.preventDefault();
-  if (!event.repeat) link.click();
-">
+<body>
   <main class="wrap section credits">
     <p class="eyebrow"><a href="./index.html">Atpakaļ uz sākumu</a></p>
     <h1>Avoti</h1>
@@ -38,5 +33,6 @@
       <li><a href="https://commons.wikimedia.org/wiki/File:Symbol_of_the_Workers%27_Party_of_Korea.svg">Korejas Darba partijas emblēma</a> · publiskais domēns</li>
     </ul>
   </main>
+  <script src="./js/keyboard.js" async></script>
 </body>
 </html>

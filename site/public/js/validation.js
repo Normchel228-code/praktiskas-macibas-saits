@@ -48,6 +48,10 @@ export function validateFeedback(input) {
   } else if (message.length > messageLimit) {
     errors.message = `Atsauksmē drīkst būt līdz ${messageLimit} rakstzīmēm.`;
   }
-
+  if (input?.days !== undefined) {
+    if (!Number.isInteger(input.days) || input.days < 1 || input.days > 365) {
+      errors.days = "Jābūt pozitīvam skaitlim.";
+    }
+  }
   return errors;
 }
